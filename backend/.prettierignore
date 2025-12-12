@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist
+build
+coverage
+
+# Generated files
+*.generated.*
+src/generated
+
+# Database
+*.db
+*.db-journal
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
