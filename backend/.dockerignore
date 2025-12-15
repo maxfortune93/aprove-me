@@ -48,6 +48,7 @@ README.md
 # Config files that shouldn't be in container
 .eslintrc*
 .prettierrc
-tsconfig*.json
-nest-cli.json
+# tsconfig*.json e nest-cli.json são necessários para o build do NestJS
+
+
 

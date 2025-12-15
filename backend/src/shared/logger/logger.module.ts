@@ -8,17 +8,10 @@ import { LogLevel } from './types';
     {
       provide: LoggerService,
       useFactory: () => {
-        const isProduction = process.env.NODE_ENV === 'production';
-        const logLevel =
-          (process.env.LOG_LEVEL?.toUpperCase() as LogLevel) ||
-          (isProduction ? LogLevel.LOG : LogLevel.DEBUG);
-        const logFormat =
-          process.env.LOG_FORMAT || (isProduction ? 'json' : 'color');
-
         return new LoggerService({
           context: 'AproveMe',
-          level: logLevel,
-          json: logFormat === 'json',
+          level: LogLevel.VERBOSE,
+          json: false,
           timestamp: true,
           showContext: true,
           isoTimestamp: true,

@@ -1,6 +1,5 @@
 import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-assignment
-const chalk: any = require('chalk');
+import chalk from 'chalk';
 
 import { LogLevel, LogEntry } from './types';
 import type { LoggerConfig } from './interfaces';
