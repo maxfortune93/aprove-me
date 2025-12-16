@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsUUID, IsNumber, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsUUID, IsNumber, IsDateString, Min } from 'class-validator';
 
 export class CreatePayableRequestDto {
   @IsNotEmpty({ message: 'O campo value é obrigatório' })
   @IsNumber({}, { message: 'O campo value deve ser um número' })
+  @Min(0.01, { message: 'O campo value deve ser maior que zero' })
   value: number;
 
   @IsNotEmpty({ message: 'O campo emissionDate é obrigatório' })

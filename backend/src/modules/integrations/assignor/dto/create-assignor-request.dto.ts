@@ -1,15 +1,23 @@
-import { IsNotEmpty, IsString, MaxLength, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, Matches } from 'class-validator';
+import { IsCpfCnpj } from '../../../../shared/validators/cpf-cnpj.validator';
+import { IsValidEmail } from '../../../../shared/validators/email.validator';
 
 export class CreateAssignorRequestDto {
   @IsNotEmpty({ message: 'O campo document é obrigatório' })
   @IsString({ message: 'O campo document deve ser uma string' })
-  @MaxLength(30, {
-    message: 'O campo document não pode ter mais de 30 caracteres',
+  @Matches(/^\d+$/, {
+    message: 'O campo document deve conter apenas números',
+  })
+  @IsCpfCnpj({
+    message: 'O campo document deve ser um CPF (11 dígitos) ou CNPJ (14 dígitos) válido',
   })
   document: string;
 
   @IsNotEmpty({ message: 'O campo email é obrigatório' })
-  @IsEmail({}, { message: 'O campo email deve ser um email válido' })
+  @IsString({ message: 'O campo email deve ser uma string' })
+  @IsValidEmail({
+    message: 'O campo email deve ter um formato válido (exemplo: usuario@dominio.com)',
+  })
   @MaxLength(140, {
     message: 'O campo email não pode ter mais de 140 caracteres',
   })
