@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateAssignorUseCase } from '../../../core/application/assignor/create-assignor.usecase';
 import { GetAssignorUseCase } from '../../../core/application/assignor/get-assignor.usecase';
+import { ListAssignorsUseCase } from '../../../core/application/assignor/list-assignors.usecase';
 import { UpdateAssignorUseCase } from '../../../core/application/assignor/update-assignor.usecase';
 import { DeleteAssignorUseCase } from '../../../core/application/assignor/delete-assignor.usecase';
 import { CreateAssignorRequestDto } from './dto/create-assignor-request.dto';
@@ -19,6 +20,7 @@ export class AssignorController {
   constructor(
     private readonly createAssignorUseCase: CreateAssignorUseCase,
     private readonly getAssignorUseCase: GetAssignorUseCase,
+    private readonly listAssignorsUseCase: ListAssignorsUseCase,
     private readonly updateAssignorUseCase: UpdateAssignorUseCase,
     private readonly deleteAssignorUseCase: DeleteAssignorUseCase,
   ) {}
@@ -33,6 +35,12 @@ export class AssignorController {
     };
 
     return this.createAssignorUseCase.execute(createAssignorDto);
+  }
+
+  @Get()
+  async getAll() {
+    const assignors = await this.listAssignorsUseCase.execute();
+    return assignors;
   }
 
   @Get(':id')

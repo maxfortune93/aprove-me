@@ -75,7 +75,6 @@ describe('DeletePayableUseCase', () => {
       
       payableRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(payableId)).rejects.toThrow(
         new NotFoundException(`Payable com id ${payableId} não encontrado`),
       );

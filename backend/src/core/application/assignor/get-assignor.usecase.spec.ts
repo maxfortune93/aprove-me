@@ -65,7 +65,6 @@ describe('GetAssignorUseCase', () => {
       
       assignorRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(assignorId)).rejects.toThrow(
         new NotFoundException(`Assignor com id ${assignorId} não encontrado`),
       );

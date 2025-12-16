@@ -87,7 +87,6 @@ describe('UpdateAssignorUseCase', () => {
       const updateData = { name: 'Nome Atualizado' };
       assignorRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(assignorId, updateData)).rejects.toThrow(
         new NotFoundException(`Assignor com id ${assignorId} não encontrado`),
       );

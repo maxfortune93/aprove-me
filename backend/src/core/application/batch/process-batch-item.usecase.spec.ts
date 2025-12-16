@@ -123,7 +123,6 @@ describe('ProcessBatchItemUseCase', () => {
       
       assignorRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(jobData)).rejects.toThrow(
         NotFoundException,
       );

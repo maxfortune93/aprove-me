@@ -30,6 +30,15 @@ export class PayablePrismaRepository implements IPayableRepository {
     return PayableMapper.toDomain(prismaPayable);
   }
 
+  async findAll(): Promise<Payable[]> {
+    const prismaPayables = await this.prisma.payable.findMany({
+      include: { assignor: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return prismaPayables.map((payable) => PayableMapper.toDomain(payable));
+  }
+
   async update(id: string, data: Partial<Payable>): Promise<Payable> {
     const updateData: {
       value?: number;

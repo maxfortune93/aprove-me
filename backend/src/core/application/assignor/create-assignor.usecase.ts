@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, ConflictException } from '@nestjs/common';
 import type { IAssignorRepository } from '../../domain/assignor/assignor.repository.interface';
 import { Assignor } from '../../domain/assignor/assignor.entity';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
@@ -12,6 +12,13 @@ export class CreateAssignorUseCase {
   ) {}
 
   async execute(createAssignorDto: CreateAssignorDto): Promise<Assignor> {
+    const existingAssignor = await this.assignorRepository.findByDocument(
+      createAssignorDto.document,
+    );
+
+    if (existingAssignor) {
+      throw new ConflictException('Cedente com este documento já existe');
+    }
 
     const id = createAssignorDto.id || '';
 

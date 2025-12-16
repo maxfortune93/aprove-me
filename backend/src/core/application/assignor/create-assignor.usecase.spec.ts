@@ -4,6 +4,7 @@ import { IAssignorRepository } from '../../domain/assignor/assignor.repository.i
 import { Assignor } from '../../domain/assignor/assignor.entity';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { TOKENS } from '../../../shared/di/tokens';
+import { ConflictException } from '@nestjs/common';
 
 describe('CreateAssignorUseCase', () => {
   let useCase: CreateAssignorUseCase;
@@ -14,6 +15,7 @@ describe('CreateAssignorUseCase', () => {
     const mockAssignorRepository = {
       create: jest.fn(),
       findById: jest.fn(),
+      findByDocument: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     };
@@ -56,6 +58,7 @@ describe('CreateAssignorUseCase', () => {
 
     it('deve criar um assignor com sucesso quando dados são válidos', async () => {
       
+      assignorRepository.findByDocument.mockResolvedValue(null);
       assignorRepository.create.mockResolvedValue(mockCreatedAssignor);
 
       
@@ -63,6 +66,7 @@ describe('CreateAssignorUseCase', () => {
 
       
       expect(result).toEqual(mockCreatedAssignor);
+      expect(assignorRepository.findByDocument).toHaveBeenCalledWith('12345678901');
       expect(assignorRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
           id: '',
@@ -75,12 +79,35 @@ describe('CreateAssignorUseCase', () => {
       expect(assignorRepository.create).toHaveBeenCalledTimes(1);
     });
 
+    it('deve lançar ConflictException quando documento já existe', async () => {
+      
+      const existingAssignor = new Assignor(
+        'existing-uuid',
+        '12345678901',
+        'existing@example.com',
+        '11888888888',
+        'Cedente Existente',
+      );
+      assignorRepository.findByDocument.mockResolvedValue(existingAssignor);
+
+      
+      await expect(useCase.execute(createAssignorDto)).rejects.toThrow(
+        new ConflictException('Cedente com este documento já existe'),
+      );
+
+      
+      expect(assignorRepository.findByDocument).toHaveBeenCalledWith('12345678901');
+      expect(assignorRepository.findByDocument).toHaveBeenCalledTimes(1);
+      expect(assignorRepository.create).not.toHaveBeenCalled();
+    });
+
     it('deve criar assignor com id vazio quando id não fornecido', async () => {
       
       const dtoWithoutId: CreateAssignorDto = {
         ...createAssignorDto,
         id: undefined,
       };
+      assignorRepository.findByDocument.mockResolvedValue(null);
       assignorRepository.create.mockResolvedValue(mockCreatedAssignor);
 
       
@@ -107,6 +134,7 @@ describe('CreateAssignorUseCase', () => {
         dtoWithId.phone,
         dtoWithId.name,
       );
+      assignorRepository.findByDocument.mockResolvedValue(null);
       assignorRepository.create.mockResolvedValue(assignorWithCustomId);
 
       
@@ -123,6 +151,7 @@ describe('CreateAssignorUseCase', () => {
 
     it('deve criar assignor com todos os campos corretos', async () => {
       
+      assignorRepository.findByDocument.mockResolvedValue(null);
       assignorRepository.create.mockResolvedValue(mockCreatedAssignor);
 
       

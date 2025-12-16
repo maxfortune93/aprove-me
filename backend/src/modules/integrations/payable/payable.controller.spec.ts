@@ -5,6 +5,7 @@ import { CreatePayableUseCase } from '../../../core/application/payable/create-p
 import { GetPayableUseCase } from '../../../core/application/payable/get-payable.usecase';
 import { UpdatePayableUseCase } from '../../../core/application/payable/update-payable.usecase';
 import { DeletePayableUseCase } from '../../../core/application/payable/delete-payable.usecase';
+import { ListPayablesUseCase } from '../../../core/application/payable/list-payables.usecase';
 import { Payable } from '../../../core/domain/payable/payable.entity';
 import { Assignor } from '../../../core/domain/assignor/assignor.entity';
 
@@ -27,6 +28,12 @@ describe('PayableController', () => {
         },
         {
           provide: GetPayableUseCase,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ListPayablesUseCase,
           useValue: {
             execute: jest.fn(),
           },
@@ -169,7 +176,6 @@ describe('PayableController', () => {
         new NotFoundException('Payable com id payable-uuid não encontrado'),
       );
 
-       & Assert
       await expect(controller.getById('payable-uuid')).rejects.toThrow(
         NotFoundException,
       );
@@ -304,7 +310,6 @@ describe('PayableController', () => {
         new NotFoundException('Payable com id payable-uuid não encontrado'),
       );
 
-       & Assert
       await expect(controller.delete('payable-uuid')).rejects.toThrow(
         NotFoundException,
       );

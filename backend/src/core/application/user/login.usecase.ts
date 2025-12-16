@@ -65,7 +65,7 @@ export class LoginUseCase {
     });
 
     return {
-      access_token: this.jwtTokenService.sign(payload, { expiresIn: '1m' }),
+      access_token: this.jwtTokenService.sign(payload, { expiresIn: (process.env.JWT_EXPIRES_IN) as string }),
     };
   }
 }

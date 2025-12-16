@@ -28,6 +28,26 @@ export class AssignorPrismaRepository implements IAssignorRepository {
     return AssignorMapper.toDomain(prismaAssignor);
   }
 
+  async findByDocument(document: string): Promise<Assignor | null> {
+    const prismaAssignor = await this.prisma.assignor.findFirst({
+      where: { document },
+    });
+
+    if (!prismaAssignor) {
+      return null;
+    }
+
+    return AssignorMapper.toDomain(prismaAssignor);
+  }
+
+  async findAll(): Promise<Assignor[]> {
+    const prismaAssignors = await this.prisma.assignor.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return prismaAssignors.map((assignor) => AssignorMapper.toDomain(assignor));
+  }
+
   async update(id: string, data: Partial<Assignor>): Promise<Assignor> {
     const updateData: {
       document?: string;

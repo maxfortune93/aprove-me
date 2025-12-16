@@ -76,6 +76,70 @@ Mas sabemos que o dia a dia é corrido, faça de forma que fique confortável pa
 
 Mas não desista! Envie até onde conseguir.
 
+## 🐳 Executando o Projeto Completo
+
+O projeto está organizado como um monorepo com backend e frontend separados. Você pode executar tudo junto usando Docker Compose na raiz do projeto.
+
+### Pré-requisitos
+
+- Docker e Docker Compose instalados
+- Git
+
+### Executando com Docker Compose (Recomendado)
+
+Na raiz do projeto, execute:
+
+```bash
+# Subir todos os serviços (backend + frontend + redis)
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar todos os serviços
+docker-compose down
+```
+
+**Serviços disponíveis:**
+- **Backend API**: http://localhost:3000
+- **Frontend**: http://localhost:3001
+- **Redis**: localhost:6379
+
+**Arquivos de exemplo**
+
+- `docker-compose.example.yaml`: stack completa (backend, frontend e redis).
+- `backend/docker-compose.example.yaml`: somente backend + redis.
+
+Use-os como base:
+
+```bash
+cp docker-compose.example.yaml docker-compose.yaml
+cp backend/docker-compose.example.yaml backend/docker-compose.yaml
+# preencha as variáveis de ambiente necessárias antes de subir os serviços
+```
+
+### Executando Individualmente
+
+Você também pode executar cada serviço individualmente:
+
+**Backend:**
+```bash
+cd backend
+docker-compose up -d
+# ou
+npm install && npm run start:dev
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install && npm run dev
+```
+
+Para mais detalhes, consulte os READMEs específicos:
+- [Backend README](./backend/README.md)
+- [Frontend README](./frontend/README.md)
+
 ## 💻 O Problema
 
 Um cliente da Bankme solicitou uma nova funcionalidade, relacionada a recebíveis.

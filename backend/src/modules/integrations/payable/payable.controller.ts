@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreatePayableUseCase } from '../../../core/application/payable/create-payable.usecase';
 import { GetPayableUseCase } from '../../../core/application/payable/get-payable.usecase';
+import { ListPayablesUseCase } from '../../../core/application/payable/list-payables.usecase';
 import { UpdatePayableUseCase } from '../../../core/application/payable/update-payable.usecase';
 import { DeletePayableUseCase } from '../../../core/application/payable/delete-payable.usecase';
 import { CreatePayableRequestDto } from './dto/create-payable-request.dto';
@@ -21,6 +22,7 @@ export class PayableController {
   constructor(
     private readonly createPayableUseCase: CreatePayableUseCase,
     private readonly getPayableUseCase: GetPayableUseCase,
+    private readonly listPayablesUseCase: ListPayablesUseCase,
     private readonly updatePayableUseCase: UpdatePayableUseCase,
     private readonly deletePayableUseCase: DeletePayableUseCase,
   ) {}
@@ -35,6 +37,12 @@ export class PayableController {
 
     const payable = await this.createPayableUseCase.execute(createPayableDto);
     return this.toResponseDto(payable);
+  }
+
+  @Get()
+  async getAll() {
+    const payables = await this.listPayablesUseCase.execute();
+    return payables.map((payable) => this.toResponseDto(payable));
   }
 
   @Get(':id')

@@ -20,7 +20,7 @@ import { LoggerModule } from '../../shared/logger/logger.module';
     LoggerModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
-      signOptions: { expiresIn: '1m' },
+      signOptions: { expiresIn: (process.env.JWT_EXPIRES_IN) as any },
     }),
   ],
   controllers: [AuthController],

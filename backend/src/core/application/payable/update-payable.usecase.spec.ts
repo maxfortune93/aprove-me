@@ -116,7 +116,6 @@ describe('UpdatePayableUseCase', () => {
       const updateData = { value: 2000.75 };
       payableRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(payableId, updateData)).rejects.toThrow(
         new NotFoundException(`Payable com id ${payableId} não encontrado`),
       );
@@ -161,7 +160,6 @@ describe('UpdatePayableUseCase', () => {
       payableRepository.findById.mockResolvedValue(existingPayable);
       assignorRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(payableId, updateData)).rejects.toThrow(
         new NotFoundException(
           `Assignor com id non-existent-assignor não encontrado`,

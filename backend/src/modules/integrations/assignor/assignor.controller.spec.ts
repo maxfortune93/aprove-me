@@ -5,6 +5,7 @@ import { CreateAssignorUseCase } from '../../../core/application/assignor/create
 import { GetAssignorUseCase } from '../../../core/application/assignor/get-assignor.usecase';
 import { UpdateAssignorUseCase } from '../../../core/application/assignor/update-assignor.usecase';
 import { DeleteAssignorUseCase } from '../../../core/application/assignor/delete-assignor.usecase';
+import { ListAssignorsUseCase } from '../../../core/application/assignor/list-assignors.usecase';
 import { Assignor } from '../../../core/domain/assignor/assignor.entity';
 
 describe('AssignorController', () => {
@@ -26,6 +27,12 @@ describe('AssignorController', () => {
         },
         {
           provide: GetAssignorUseCase,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ListAssignorsUseCase,
           useValue: {
             execute: jest.fn(),
           },
@@ -115,7 +122,6 @@ describe('AssignorController', () => {
         new NotFoundException('Assignor com id assignor-uuid não encontrado'),
       );
 
-       & Assert
       await expect(controller.getById('assignor-uuid')).rejects.toThrow(
         NotFoundException,
       );
@@ -234,7 +240,6 @@ describe('AssignorController', () => {
         new NotFoundException('Assignor com id assignor-uuid não encontrado'),
       );
 
-       & Assert
       await expect(controller.delete('assignor-uuid')).rejects.toThrow(
         NotFoundException,
       );

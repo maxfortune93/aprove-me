@@ -1,10 +1,15 @@
+x-buildkit: &buildkit
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
 services:
   backend:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        - DATABASE_URL=file:/app/data/dev.db
+        # - DATABASE_URL=file:/app/data/dev.db
+        - DATABASE_URL=file:/app/dev.db
     container_name: aprove-me-backend
     ports:
       - '3000:3000'
@@ -12,13 +17,15 @@ services:
       - NODE_ENV=production
       - PORT=3000
       
-      - DATABASE_URL=file:/app/data/dev.db
+      # - DATABASE_URL=file:/app/data/dev.db
+      - DATABASE_URL=file:/app/dev.db
 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
 
       - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1h}
 
       - LOG_LEVEL=${LOG_LEVEL:-LOG}
       - LOG_FORMAT=${LOG_FORMAT:-json}
@@ -30,13 +37,16 @@ services:
       - SMTP_PASS=${SMTP_PASS:-}
       - SMTP_FROM=${SMTP_FROM:-noreply@aproveme.com}
 
-      - BATCH_NOTIFICATION_EMAIL=${BATCH_NOTIFICATION_EMAIL:-operations@aproveme.com}
-      - DLQ_NOTIFICATION_EMAIL=${DLQ_NOTIFICATION_EMAIL:-operations@aproveme.com}
+      - BATCH_NOTIFICATION_EMAIL=${BATCH_NOTIFICATION_EMAIL:-marouanemiramax4@gmail.com}
+      - DLQ_NOTIFICATION_EMAIL=${DLQ_NOTIFICATION_EMAIL:-marouanemiramax4@gmail.com}
+
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3001,http://localhost:3000}
     # volumes:
     #   - ./data:/app/data
     #   - ./prisma:/app/prisma
     volumes:
-      - ./dev.db:/app/data/dev.db
+      # - ./dev.db:/app/data/dev.db
+      - ./prisma/dev.db:/app/dev.db
       - ./prisma:/app/prisma
     depends_on:
       redis:

@@ -122,7 +122,6 @@ describe('CreatePayableUseCase', () => {
       
       assignorRepository.findById.mockResolvedValue(null);
 
-       & Assert
       await expect(useCase.execute(createPayableDto)).rejects.toThrow(
         new NotFoundException(
           `Assignor com id ${assignorId} não encontrado`,
