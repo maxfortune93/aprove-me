@@ -1,0 +1,18 @@
+import { IsNotEmpty, IsUUID, IsNumber, IsDateString } from 'class-validator';
+
+export class CreatePayableRequestDto {
+  @IsNotEmpty({ message: 'O campo value é obrigatório' })
+  @IsNumber({}, { message: 'O campo value deve ser um número' })
+  value: number;
+
+  @IsNotEmpty({ message: 'O campo emissionDate é obrigatório' })
+  @IsDateString(
+    {},
+    { message: 'O campo emissionDate deve ser uma data válida' },
+  )
+  emissionDate: string;
+
+  @IsNotEmpty({ message: 'O campo assignor é obrigatório' })
+  @IsUUID('4', { message: 'O campo assignor deve ser um UUID válido' })
+  assignor: string;
+}
