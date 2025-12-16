@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { isValidCpfCnpj } from "./cpf-cnpj-validator";
+import { isValidEmail } from "./email-validator";
 
 // Schema de validação para login
 export const loginSchema = z.object({
@@ -31,7 +33,8 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 export const payableSchema = z.object({
   id: z.string().uuid("ID deve ser um UUID válido"),
   value: z
-    .number()
+    .number("Valor é obrigatório e deve ser um número")
+    .min(0.01, "Valor deve ser maior que zero")
     .positive("Valor deve ser um número positivo")
     .finite("Valor deve ser um número válido"),
   emissionDate: z.string().min(1, "Data de emissão é obrigatória"),
@@ -43,7 +46,8 @@ export type PayableFormData = z.infer<typeof payableSchema>;
 // Schema de validação para criação de Payable (sem ID)
 export const createPayableSchema = z.object({
   value: z
-    .number()
+    .number("Valor é obrigatório e deve ser um número")
+    .min(0.01, "Valor deve ser maior que zero")
     .positive("Valor deve ser um número positivo")
     .finite("Valor deve ser um número válido"),
   emissionDate: z
@@ -72,11 +76,23 @@ export const assignorSchema = z.object({
   document: z
     .string()
     .min(1, "Documento é obrigatório")
-    .max(30, "Documento deve ter no máximo 30 caracteres"),
+    .max(30, "Documento deve ter no máximo 30 caracteres")
+    .refine(
+      (doc) => /^\d+$/.test(doc),
+      { message: "Documento deve conter apenas números" }
+    )
+    .refine(
+      (doc) => isValidCpfCnpj(doc),
+      { message: "Documento deve ser um CPF (11 dígitos) ou CNPJ (14 dígitos) válido" }
+    ),
   email: z
     .string()
-    .email("Email inválido")
-    .max(140, "Email deve ter no máximo 140 caracteres"),
+    .min(1, "Email é obrigatório")
+    .max(140, "Email deve ter no máximo 140 caracteres")
+    .refine(
+      (email) => isValidEmail(email),
+      { message: "Email deve ter um formato válido (exemplo: usuario@dominio.com)" }
+    ),
   phone: z
     .string()
     .min(1, "Telefone é obrigatório")
@@ -94,12 +110,23 @@ export const createAssignorSchema = z.object({
   document: z
     .string()
     .min(1, "Documento é obrigatório")
-    .max(30, "Documento deve ter no máximo 30 caracteres"),
+    .max(30, "Documento deve ter no máximo 30 caracteres")
+    .refine(
+      (doc) => /^\d+$/.test(doc),
+      { message: "Documento deve conter apenas números" }
+    )
+    .refine(
+      (doc) => isValidCpfCnpj(doc),
+      { message: "Documento deve ser um CPF (11 dígitos) ou CNPJ (14 dígitos) válido" }
+    ),
   email: z
     .string()
     .min(1, "Email é obrigatório")
-    .email("Email inválido")
-    .max(140, "Email deve ter no máximo 140 caracteres"),
+    .max(140, "Email deve ter no máximo 140 caracteres")
+    .refine(
+      (email) => isValidEmail(email),
+      { message: "Email deve ter um formato válido (exemplo: usuario@dominio.com)" }
+    ),
   phone: z
     .string()
     .min(1, "Telefone é obrigatório")

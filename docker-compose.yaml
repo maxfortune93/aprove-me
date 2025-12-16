@@ -26,7 +26,7 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
 
       - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
-      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1h}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1m}
 
       - LOG_LEVEL=${LOG_LEVEL:-LOG}
       - LOG_FORMAT=${LOG_FORMAT:-json}
@@ -34,9 +34,9 @@ services:
       - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
       - SMTP_PORT=${SMTP_PORT:-587}
       - SMTP_SECURE=${SMTP_SECURE:-false}
-      - SMTP_USER=${SMTP_USER:-}
-      - SMTP_PASS=${SMTP_PASS:-}
-      - SMTP_FROM=${SMTP_FROM:-noreply@aproveme.com}
+      - SMTP_USER=${SMTP_USER:-marouanemiramax4@gmail.com}
+      - SMTP_PASS=${SMTP_PASS:-likl dhhc tfss wekl}
+      - SMTP_FROM=${SMTP_FROM:-marouanemiramax4@gmail.com}
 
       - BATCH_NOTIFICATION_EMAIL=${BATCH_NOTIFICATION_EMAIL:-marouanemiramax4@gmail.com}
       - DLQ_NOTIFICATION_EMAIL=${DLQ_NOTIFICATION_EMAIL:-marouanemiramax4@gmail.com}
